@@ -53,18 +53,23 @@ const Signup = () => {
     }
 
     return (
-        <div className='flex justify-center items-center min-h-screen bg-pink-100'>
-            <Card className="w-full max-w-sm">
+        <div className="flex justify-center items-center min-h-screen bg-pink-100 px-4">
+            <Card className="w-full max-w-md sm:max-w-lg">
                 <CardHeader>
-                    <CardTitle>Create your account</CardTitle>
-                    <CardDescription>
+                    <CardTitle className="text-xl sm:text-2xl">
+                        Create your account
+                    </CardTitle>
+                    <CardDescription className="text-sm sm:text-base">
                         Enter given details below to create your account
                     </CardDescription>
                 </CardHeader>
+
                 <CardContent>
-                    <div className="flex flex-col gap-3">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className='grid gap-2'>
+                    <div className="flex flex-col gap-4">
+
+                        {/* Responsive Name Fields */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid gap-2">
                                 <Label htmlFor="firstName">First Name</Label>
                                 <Input
                                     id="firstName"
@@ -76,7 +81,8 @@ const Signup = () => {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <div className='grid gap-2'>
+
+                            <div className="grid gap-2">
                                 <Label htmlFor="lastName">Last Name</Label>
                                 <Input
                                     id="lastName"
@@ -89,7 +95,9 @@ const Signup = () => {
                                 />
                             </div>
                         </div>
-                        <div className='grid gap-2'>
+
+                        {/* Email */}
+                        <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
                                 id="email"
@@ -101,30 +109,64 @@ const Signup = () => {
                                 onChange={handleChange}
                             />
                         </div>
+
+                        {/* Password */}
                         <div className="grid gap-2">
-                            <div className="flex items-center">
-                                <Label htmlFor="password">Password</Label>
-                            </div>
-                            <div className='relative'>
-                                <Input id="password"
+                            <Label htmlFor="password">Password</Label>
+
+                            <div className="relative">
+                                <Input
+                                    id="password"
                                     name="password"
                                     value={formData.password}
                                     onChange={handleChange}
-                                    type={showPassword ? 'text' : 'password'}
+                                    type={showPassword ? "text" : "password"}
                                     placeholder="Create a password"
-                                    required />
-                                {
-                                    showPassword ? <EyeOff onClick={() => setShowPassword(false)} className='w-5 h-5 text-gray-700 absolute right-5 bottom-2' /> : <Eye onClick={() => setShowPassword(true)} className='w-5 h-5 text-gray-700 absolute right-5 bottom-2' />
-                                }
+                                    required
+                                    className="pr-10"
+                                />
+
+                                {showPassword ? (
+                                    <EyeOff
+                                        onClick={() => setShowPassword(false)}
+                                        className="w-5 h-5 text-gray-700 absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                                    />
+                                ) : (
+                                    <Eye
+                                        onClick={() => setShowPassword(true)}
+                                        className="w-5 h-5 text-gray-700 absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
                 </CardContent>
-                <CardFooter className="flex-col gap-2">
-                    <Button onClick={submitHandler} type="submit" className="w-full cursor-pointer bg-pink-600 hover:bg-pink-400">
-                        {loading ? <><Loader2 className='h-4 w-4 animate-spin mr-2' />Please wait</> : 'Signup'}
+
+                <CardFooter className="flex-col gap-3">
+                    <Button
+                        onClick={submitHandler}
+                        type="submit"
+                        className="w-full bg-pink-600 hover:bg-pink-500"
+                    >
+                        {loading ? (
+                            <>
+                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                Please wait
+                            </>
+                        ) : (
+                            "Signup"
+                        )}
                     </Button>
-                    <p className='text-gray-700 text-sm'>Already have an account?<Link to={'/login'} className='hover:underline cursor-pointer text-pink-800'>Login</Link></p>
+
+                    <p className="text-gray-700 text-sm text-center">
+                        Already have an account?{" "}
+                        <Link
+                            to="/login"
+                            className="hover:underline text-pink-800"
+                        >
+                            Login
+                        </Link>
+                    </p>
                 </CardFooter>
             </Card>
         </div>
