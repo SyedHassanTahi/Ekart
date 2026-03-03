@@ -20,7 +20,8 @@ const AdminOders = lazy(() => import("./pages/admin/AdminOders"));
 const ShowUserOrders = lazy(() => import("./pages/admin/ShowUserOrders"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const UserInfo = lazy(() => import("./pages/admin/UserInfo"));
-const SingleProduct = lazy(() => import("./pages/SingleProduct"));
+import SingleProduct from "./pages/SingleProduct"
+// const SingleProduct = lazy(() => import("./pages/SingleProduct"));
 const AddressForm = lazy(() => import("./pages/AddressForm"));
 const MyOrder = lazy(() => import("./pages/MyOrder"));
 const Profile = lazy(() => import("./components/Profile"));
