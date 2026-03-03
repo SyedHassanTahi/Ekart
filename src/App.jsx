@@ -1,121 +1,126 @@
-import React from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import Verify from './pages/Verify';
-import VerifyEmail from './components/VerifyEmail';
-import Footer from './components/Footer';
-import Profile from './components/Profile';
-import Products from './pages/Products';
-import Cart from './pages/Cart';
-import Dashboard from './pages/Dashboard';
-import AdminSales from './pages/admin/AdminSales';
-import AddProduct from './pages/admin/AddProduct';
-import AdminProduct from './pages/admin/AdminProduct';
-import AdminOders from './pages/admin/AdminOders';
-import ShowUserOrders from './pages/admin/ShowUserOrders';
-import AdminUsers from './pages/admin/AdminUsers';
-import UserInfo from './pages/admin/UserInfo';
-import ProtectedRoute from './components/ProtectedRoute';
-import SingleProduct from './pages/SingleProduct';
-import AddressForm from './pages/AddressForm';
-import OrderSuccess from './components/OrderSuccess';
-import MyOrder from './pages/MyOrder';
+import React, { lazy, Suspense } from "react";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
+import VerifyEmail from "./components/VerifyEmail";
+import OrderSuccess from "./components/OrderSuccess";
+import Loading from "./components/Loading";
+const Home = lazy(() => import("./pages/Home"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Login = lazy(() => import("./pages/Login"));
+const Verify = lazy(() => import("./pages/Verify"));
+const Products = lazy(() => import("./pages/Products"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const AdminSales = lazy(() => import("./pages/admin/AdminSales"));
+const AddProduct = lazy(() => import("./pages/admin/AddProduct"));
+const AdminProduct = lazy(() => import("./pages/admin/AdminProduct"));
+const AdminOders = lazy(() => import("./pages/admin/AdminOders"));
+const ShowUserOrders = lazy(() => import("./pages/admin/ShowUserOrders"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const UserInfo = lazy(() => import("./pages/admin/UserInfo"));
+const SingleProduct = lazy(() => import("./pages/SingleProduct"));
+const AddressForm = lazy(() => import("./pages/AddressForm"));
+const MyOrder = lazy(() => import("./pages/MyOrder"));
+const Profile = lazy(() => import("./components/Profile"));
 
+const MainLayout = () => {
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+      <Footer />
+    </>
+  );
+};
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <><Navbar /><Home /><Footer /></>
-  },
-  {
-    path: '/signup',
-    element: <><Signup /></>
-  },
-  {
-    path: '/login',
-    element: <><Login /></>
-  },
-  {
-    path: '/verify',
-    element: <><Verify /></>
-  },
-  {
-    path: '/verify/:token',
-    element: <><VerifyEmail /></>
-  },
-  {
-    path: '/profile/:userId',
-    element: <ProtectedRoute><Navbar /><Profile /></ProtectedRoute>
-  },
-  {
-    path: '/products',
-    element: <><Navbar /><Products /></>
-  },
-  {
-    path: '/products/:id',
-    element: <><Navbar /><SingleProduct /></>
-  },
-  {
-    path: '/cart',
-    element: <ProtectedRoute><Navbar /><Cart /></ProtectedRoute>
-  },
-  {
-    path: '/address',
-    element: <ProtectedRoute><AddressForm /></ProtectedRoute>
-  },
-  {
-    path: '/order-success',
-    element: <ProtectedRoute><OrderSuccess/></ProtectedRoute>
-  },
-  {
-    path: '/orders',
-    element: <ProtectedRoute><Navbar /><MyOrder/></ProtectedRoute>
-  },
-  {
-    path: '/dashboard',
-    element: <ProtectedRoute adminOnly={true}><Navbar /><Dashboard /></ProtectedRoute>,
+    element: <MainLayout />,
     children: [
+      { path: "/", element: <Home /> },
+
+      { path: "/products", element: <Products /> },
+      { path: "/products/:id", element: <SingleProduct /> },
+
       {
-        path: "sales",
-        element: <AdminSales />
+        path: "/cart",
+        element: (
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>
+        ),
       },
+
       {
-        path: "add-product",
-        element: <AddProduct />
+        path: "/orders",
+        element: (
+          <ProtectedRoute>
+            <MyOrder />
+          </ProtectedRoute>
+        ),
       },
+
       {
-        path: "products",
-        element: <AdminProduct />
+        path: "/profile/:userId",
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
-      {
-        path: "orders",
-        element: <AdminOders />
-      },
-      {
-        path: "users/orders/:userId",
-        element: <ShowUserOrders />
-      },
-      {
-        path: "users",
-        element: <AdminUsers />
-      },
-      {
-        path: "users/:id",
-        element: <UserInfo />
-      },
-    ]
+    ],
   },
-])
+
+  {
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute adminOnly={true}>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: "sales", element: <AdminSales /> },
+      { path: "add-product", element: <AddProduct /> },
+      { path: "products", element: <AdminProduct /> },
+      { path: "orders", element: <AdminOders /> },
+      { path: "users", element: <AdminUsers /> },
+      { path: "users/:id", element: <UserInfo /> },
+      { path: "users/orders/:userId", element: <ShowUserOrders /> },
+    ],
+  },
+
+  { path: "/signup", element: <Signup /> },
+  { path: "/login", element: <Login /> },
+  { path: "/verify", element: <Verify /> },
+  { path: "/verify/:token", element: <VerifyEmail /> },
+
+  {
+    path: "/address",
+    element: (
+      <ProtectedRoute>
+        <AddressForm />
+      </ProtectedRoute>
+    ),
+  },
+
+  {
+    path: "/order-success",
+    element: (
+      <ProtectedRoute>
+        <OrderSuccess />
+      </ProtectedRoute>
+    ),
+  },
+]);
 
 const App = () => {
   return (
-    <>
+    <Suspense fallback={<Loading/>}>
       <RouterProvider router={router} />
-    </>
-  )
-}
+    </Suspense>
+  );
+};
 
-export default App
+export default App;
