@@ -1,15 +1,17 @@
-import React from 'react'
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
-const Loading = () => {
+export default function CircularIndeterminate() {
     return (
-        <div id="preloader">
-            <div className="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-    )
+        <Box
+            sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            }}
+        >
+            <CircularProgress />
+        </Box>
+    );
 }
-
-export default Loading
